@@ -20,6 +20,8 @@ jobs:
   create_hotfix:
     name: Create hotfix commit
     runs-on: ubuntu-latest
+    env:
+      BRANCH_NAME: fbpcs-hotfix
     steps:
       - uses: actions/checkout@v2
         with:
@@ -35,10 +37,10 @@ jobs:
           git config --global user.email "pc_release@fb.com"
 
       - name: Create and checkout hotfix branch
-        run: git checkout ${{ github.event.inputs.base_commit }} -b fbpcs-hotfix
+        run: git checkout ${{ github.event.inputs.base_commit }} -b ${{ env.BRANCH_NAME }}
 
       - name: Cherry pick hotfix commit
         run: git cherry-pick ${{ github.event.inputs.hotfix_commit }}
 
       - name: Push hotfix commit to origin
-        run: git push -u origin ${{ github.event.inputs.branch_name }}
+        run: git push -u origin ${{ env.BRANCH_NAME }}
